@@ -1,5 +1,5 @@
 // Lift Log service worker. Bump VERSION on every release so phones pick up the update.
-const VERSION = 'liftlog-1.0.5';
+const VERSION = 'liftlog-1.0.6';
 const FONTS = 'liftlog-fonts';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
@@ -32,7 +32,7 @@ self.addEventListener('fetch', e => {
       const cache = await caches.open(VERSION);
       try {
         const res = await Promise.race([
-          fetch(req, {cache: 'no-store'}),
+          fetch(req.url, {cache: 'no-store', credentials: 'same-origin'}),
           new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
         ]);
         if (res && res.ok) cache.put('./index.html', res.clone());
