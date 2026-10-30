@@ -1,10 +1,10 @@
 // Lift Log service worker. Bump VERSION on every release so phones pick up the update.
-const VERSION = 'liftlog-1.0.6';
+const VERSION = 'liftlog-1.0.7';
 const FONTS = 'liftlog-fonts';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)));
+  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL.map(u => new Request(u, {cache: 'reload'})))));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
@@ -26,22 +26,21 @@ self.addEventListener('fetch', e => {
     return;
   }
   if (url.origin !== self.location.origin) return;
-  if (req.mode === 'navigate') {
-    // Network first so a newly published version shows up right away; saved copy when offline.
-    e.respondWith((async () => {
-      const cache = await caches.open(VERSION);
-      try {
-        const res = await Promise.race([
-          fetch(req.url, {cache: 'no-store', credentials: 'same-origin'}),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
-        ]);
-        if (res && res.ok) cache.put('./index.html', res.clone());
-        return res;
-      } catch (err) {
-        return (await cache.match('./index.html')) || (await caches.match('./index.html')) || Response.error();
-      }
-    })());
-    return;
-  }
-  e.respondWith(caches.match(req, {ignoreSearch: true}).then(hit => hit || fetch(req)));
+  // Same-origin files: network first so new versions (page, name, icon) show up right away; saved copy when offline.
+  e.respondWith((async () => {
+    const cache = await caches.open(VERSION);
+    const isPage = req.mode === 'navigate';
+    const key = isPage ? './index.html' : url.pathname;
+    try {
+      const res = await Promise.race([
+        fetch(url.href, {cache: 'no-store', credentials: 'same-origin'}),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
+      ]);
+      if (res && res.ok) cache.put(key, res.clone());
+      return res;
+    } catch (err) {
+      return (await cache.match(key, {ignoreSearch: true})) || (await caches.match(req, {ignoreSearch: true}))
+        || (isPage ? await caches.match('./index.html') : null) || Response.error();
+    }
+  })());
 });
