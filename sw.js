@@ -1,5 +1,5 @@
 // Lift Log service worker. Bump VERSION on every release so phones pick up the update.
-const VERSION = 'liftlog-1.0.4';
+const VERSION = 'liftlog-1.0.5';
 const FONTS = 'liftlog-fonts';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
@@ -27,7 +27,20 @@ self.addEventListener('fetch', e => {
   }
   if (url.origin !== self.location.origin) return;
   if (req.mode === 'navigate') {
-    e.respondWith(caches.match('./index.html').then(hit => hit || fetch(req)));
+    // Network first so a newly published version shows up right away; saved copy when offline.
+    e.respondWith((async () => {
+      const cache = await caches.open(VERSION);
+      try {
+        const res = await Promise.race([
+          fetch(req, {cache: 'no-store'}),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
+        ]);
+        if (res && res.ok) cache.put('./index.html', res.clone());
+        return res;
+      } catch (err) {
+        return (await cache.match('./index.html')) || (await caches.match('./index.html')) || Response.error();
+      }
+    })());
     return;
   }
   e.respondWith(caches.match(req, {ignoreSearch: true}).then(hit => hit || fetch(req)));
