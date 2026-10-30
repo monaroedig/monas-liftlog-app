@@ -1,5 +1,5 @@
 // Lift Log service worker. Bump VERSION on every release so phones pick up the update.
-const VERSION = 'liftlog-1.0.3';
+const VERSION = 'liftlog-1.0.4';
 const FONTS = 'liftlog-fonts';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 

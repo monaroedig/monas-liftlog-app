@@ -1,6 +1,6 @@
 {
-  "name": "Lift Log",
-  "short_name": "Lift Log",
+  "name": "Mona's Lift Log",
+  "short_name": "Mona's Lift Log",
   "description": "Personal gym log: 4-day plan, sets, rest timer and progress.",
   "id": "./",
   "start_url": "./",

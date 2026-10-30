@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Lift Log</title>
+<title>Mona's Lift Log</title>
 <meta name="description" content="Personal gym log: 4-day plan, sets, rest timer and progress.">
 <meta name="theme-color" content="#eceff3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0e1115" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Lift Log">
+<meta name="apple-mobile-web-app-title" content="Mona's Lift Log">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -168,7 +168,7 @@ textarea{resize:vertical;min-height:40px;font-size:1rem}
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand"><h1>Lift Log</h1><button class="bk" id="bk-btn" data-act="backup-open" aria-label="Backup"><i></i><span>Backup</span></button></div>
+    <div class="brand"><h1>Mona's Lift Log</h1><button class="bk" id="bk-btn" data-act="backup-open" aria-label="Backup"><i></i><span>Backup</span></button></div>
     <nav class="tabs" aria-label="Sections">
       <a href="#training" data-tab="training">Workout</a>
       <a href="#plan" data-tab="plan">Plan</a>
@@ -195,7 +195,7 @@ const fmtShort = t => new Date(t).toLocaleDateString(LOC, {day:'numeric', month:
 const mmss = s => { s = Math.max(0, Math.round(s)); return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); };
 const clone = o => JSON.parse(JSON.stringify(o));
 
-const APP_VERSION = '1.0.3';
+const APP_VERSION = '1.0.4';
 const DEFAULT_PLAN = {"days": [{"exercises": [{"id": "f36u2hyxq02", "name": "Lying Face Pulls", "note": "", "reps": "10–12", "rest": 60, "sets": 4}, {"id": "wxdjbmixq02", "name": "Single-Arm Rear Delt Fly", "note": "Sets are per side.", "reps": "8–10", "rest": 30, "sets": 4}, {"id": "v2853r0xq02", "name": "Seated Lateral Raise", "note": "", "reps": "8–12", "rest": 30, "sets": 4}, {"id": "kw6viiyxq02", "name": "Incline DB Press, Neutral Grip 15°", "note": "", "reps": "varies", "rest": 60, "setReps": ["6–8", "6–8", "10–12", "10–12"], "sets": 4}, {"id": "i0usrlgxq02", "name": "Flat Machine Press", "note": "", "reps": "10–12", "rest": 60, "sets": 2}, {"group": "A", "id": "u9erb4sxq02", "name": "Triceps Pushdown", "note": "", "reps": "10–15", "rest": 60, "sets": 3}, {"group": "B", "id": "w0286cxxq02", "name": "Hammer Cable Curl", "note": "", "reps": "10–15", "rest": 60, "sets": 3}, {"id": "cwotavnxq02", "name": "Cable Crunch", "note": "", "reps": "10–12", "rest": 60, "sets": 3}], "id": "9u51pl4xq02", "name": "Shoulders / Chest / Arms"}, {"exercises": [{"id": "bdorswqxq02", "name": "Seated Leg Curl", "note": "", "reps": "varies", "rest": 60, "setReps": ["6–8", "6–8", "10–12", "10–12"], "sets": 4}, {"id": "7zbvp51xq02", "name": "Standing Calf Raise", "note": "", "reps": "10–12", "rest": 30, "sets": 3}, {"id": "lf809q1xq02", "name": "Leg Extension", "note": "", "reps": "varies", "rest": 60, "setReps": ["15–20", "15–20", "8–12", "8–12"], "sets": 4}, {"id": "15ujwzfxq02", "name": "DB Bulgarian Split Squat (Quad Focus)", "note": "", "reps": "8–10", "rest": 60, "sets": 4}, {"id": "qkaw7caxq02", "name": "Cable Crunch", "note": "", "reps": "10–12", "rest": 60, "sets": 3}], "id": "ce1chvoxq02", "name": "Legs – Quad Focus"}, {"exercises": [{"id": "y1ue4acxq02", "name": "Lat Pulldown, Overhand Grip", "note": "", "reps": "varies", "rest": 60, "setReps": ["6–8", "6–8", "10–12", "10–12"], "sets": 4}, {"id": "u5n3p50xq02", "name": "DB Row (Lat Focus)", "note": "Sets are per side. Rest between sides only if needed.", "reps": "8–10", "rest": 30, "sets": 3}, {"id": "q8jhbkzxq02", "name": "Seated Cable Row, Wide Grip", "note": "", "reps": "8–12", "rest": 60, "sets": 4}, {"id": "f8gw3kpxq02", "name": "Face Pulls (Rotator Bias)", "note": "", "reps": "15–20", "rest": 60, "sets": 3}, {"group": "A", "id": "irbvne9xq02", "name": "Standing DB Curl", "note": "", "reps": "10–12", "rest": 60, "sets": 4}, {"group": "B", "id": "594tz3nxq02", "name": "EZ-Bar French Press", "note": "", "reps": "10–12", "rest": 60, "sets": 4, "alts": [{"id": "4w3twly1j8o", "name": "Overhead Cable Extension", "note": ""}]}, {"id": "4de25pkxq02", "name": "Cable Crunch", "note": "", "reps": "10–12", "rest": 60, "sets": 3}], "id": "y1c1qupxq02", "name": "Back / Arms"}, {"exercises": [{"id": "06j12m4xq02", "name": "Lying Leg Curl", "note": "", "reps": "varies", "rest": 60, "setReps": ["6–8", "6–8", "12–15", "12–15"], "sets": 4}, {"id": "w8ykfi6xq02", "name": "Barbell Romanian Deadlift", "note": "", "reps": "varies", "rest": 90, "setReps": ["6–8", "6–8", "10–12", "10–12"], "sets": 4}, {"id": "5w5ysidxq02", "name": "Barbell Hip Thrust", "note": "", "reps": "varies", "rest": 90, "setReps": ["6–8", "6–8", "10–12", "10–12"], "sets": 4}, {"id": "fqod4a5xq02", "name": "Leg Press, Wide Stance", "note": "", "reps": "8–12", "rest": 60, "sets": 3}, {"id": "2xvaqzrxq02", "name": "Romanian Glute Raise", "note": "", "reps": "15–20", "rest": 60, "sets": 2}, {"id": "rtudk8zxq02", "name": "Cable Crunch", "note": "", "reps": "10–12", "rest": 60, "sets": 3}], "id": "o7yb1ncxq02", "name": "Legs – Hamstrings / Glutes"}], "example": false, "v": 3};
 function ex(name, sets, reps, rest, group){ const e = {id:newId(), name, sets, reps, rest, note:''}; if (group) e.group = group; return e; }
 function defaultPlan(){ return clone(DEFAULT_PLAN); }
@@ -632,7 +632,7 @@ async function doBackup(){
   try {
     const file = new File([text], name, {type:'application/json'});
     if (navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file], title:'Lift Log backup'});
+      await navigator.share({files:[file], title:"Mona's Lift Log backup"});
       return done_('Backup shared');
     }
   } catch(e){ if (e && e.name === 'AbortError') return; console.warn(e); }
@@ -651,7 +651,7 @@ document.addEventListener('change', async ev => {
   if (!f) return;
   let d = null;
   try { d = JSON.parse(await f.text()); } catch(e){}
-  if (!validBackup(d)){ toast('That file is not a Lift Log backup.'); return; }
+  if (!validBackup(d)){ toast("That file is not a Lift Log backup."); return; }
   const n = d.workouts.filter(w => w.status === 'done').length;
   const when = d.exportedAt ? new Date(d.exportedAt).toLocaleDateString(LOC, {day:'numeric', month:'short', year:'numeric'}) : 'an unknown date';
   if (!await ask('Restore this backup?', `Backup from ${when} with ${n} workout${n === 1 ? '' : 's'}. It replaces everything currently on this phone.`, 'Restore', true)) return;
